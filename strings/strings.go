@@ -171,10 +171,6 @@ func encodeSpacesInPlace(str string) string {
 // 7: (2, 0) -> (0, 0)
 // 8: (2, 1) -> (1, 0)
 // 9: (2, 2) -> (2, 0)
-
-// 1 2 ->  3 1  got 2 4
-// 3 4     4 2      1 3
-
 func rotateSquareMatrix(matrix [][]int) [][]int {
 	fmt.Println(matrix)
 	n := len(matrix)
@@ -182,13 +178,55 @@ func rotateSquareMatrix(matrix [][]int) [][]int {
 	for i := 0; i < n; i++ {
 		blank[i] = make([]int, n)
 	}
-
-	fmt.Println(blank)
 	for row := range matrix {
 		for col := range matrix[row] {
-			fmt.Printf("row: %v, col: %v \n", row, col)
 			blank[row][col] = matrix[n-1-col][row]
 		}
 	}
 	return blank
+}
+
+// 1 2 ->  3 1
+// 3 4     4 2
+
+// 1 2 ->  3 1
+// 3 4     4 2
+// navigate:
+// (0, 0)
+// (0, 1)
+// (1, 1)
+// (1, 0)
+//
+// 1 2 3     7 4 1
+// 4 5 6 ->  8 5 2
+// 7 8 9     9 6 3
+//
+// 2 levels:
+//navigate:
+//corners:
+// (0, 0) copy to: (0, 2)
+// (0, 2) copy to: (2, 2)
+// (2, 2) copy to: (2, 0)
+// (2, 0) copy to: (0, 0)
+// centers:
+// (0, 1) copy to: (1, 2)
+// (1, 2) copy to: (2, 1)
+// (2, 1) copy to: (1, 0)
+// (1, 0) copy to: (0, 1)
+
+func rotateSquareMatrixInPlace(matrix [][]int) [][]int {
+	n := len(matrix)
+	for layer := 0; layer < n; layer++ {
+		first := layer
+		last := n - 1 - layer
+		for i := first; i < last; i++ {
+			offset := i - first
+			top := matrix[first][i]                                // save top
+			matrix[first][i] = matrix[last-offset][first]          // left -> top
+			matrix[last-offset][first] = matrix[last][last-offset] // bottom -> left
+			matrix[last][last-offset] = matrix[i][last]            // right -> bottom
+			matrix[i][last] = top                                  // top -> right
+		}
+	}
+	return matrix
 }

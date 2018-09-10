@@ -172,3 +172,27 @@ func TestRotateSquareMatrix(t *testing.T) {
 		}
 	}
 }
+
+func TestRotateSquareMatrixInPlace(t *testing.T) {
+	tests := []struct {
+		in       [][]int
+		expected [][]int
+	}{
+		{
+			[][]int{[]int{1, 2}, []int{3, 4}},
+			[][]int{[]int{3, 1}, []int{4, 2}},
+		},
+	}
+
+	for _, test := range tests {
+		actual := rotateSquareMatrixInPlace(test.in)
+
+		for r := range actual {
+			for c := range actual[r] {
+				if actual[r][c] != test.expected[r][c] {
+					t.Errorf("Expected: %v, got: %v", test.expected, actual)
+				}
+			}
+		}
+	}
+}
