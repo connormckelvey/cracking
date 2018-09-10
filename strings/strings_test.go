@@ -101,7 +101,7 @@ func TestAreAnagrams(t *testing.T) {
 	}
 }
 
-func BenchmarkAeAnagrams(b *testing.B) {
+func BenchmarkAreAnagrams(b *testing.B) {
 	str1 := "hydroxydeoxycorticosterones"
 	str2 := "hydroxydesoxycorticosterone"
 	for n := 0; n < b.N; n++ {
@@ -109,10 +109,66 @@ func BenchmarkAeAnagrams(b *testing.B) {
 	}
 }
 
-func BenchmarkAeAnagramsOptimized(b *testing.B) {
+func BenchmarkAreAnagramsOptimized(b *testing.B) {
 	str1 := "hydroxydeoxycorticosterones"
 	str2 := "hydroxydesoxycorticosterone"
 	for n := 0; n < b.N; n++ {
 		areAnagramsOptimized(str1, str2)
+	}
+}
+
+func TestEncodeSpaces(t *testing.T) {
+	tests := []struct {
+		in       string
+		expected string
+	}{
+		{"this is a sentence with spaces", "this%20is%20a%20sentence%20with%20spaces"},
+		{"nospaces", "nospaces"},
+	}
+
+	for _, test := range tests {
+		actual := encodeSpaces(test.in)
+		actual2 := encodeSpacesInPlace(test.in)
+		if actual != test.expected || actual2 != test.expected {
+			t.Errorf("Expected: %v, got: %v", test.expected, actual)
+		}
+	}
+}
+
+func BenchmarkEncodeSpaces(b *testing.B) {
+	str := "this is a sentence with spaces"
+	for n := 0; n < b.N; n++ {
+		encodeSpaces(str)
+	}
+}
+
+func BenchmarkEncodeSpacesInPlace(b *testing.B) {
+	str := "this is a sentence with spaces"
+	for n := 0; n < b.N; n++ {
+		encodeSpacesInPlace(str)
+	}
+}
+
+func TestRotateSquareMatrix(t *testing.T) {
+	tests := []struct {
+		in       [][]int
+		expected [][]int
+	}{
+		{
+			[][]int{[]int{1, 2}, []int{3, 4}},
+			[][]int{[]int{3, 1}, []int{4, 2}},
+		},
+	}
+
+	for _, test := range tests {
+		actual := rotateSquareMatrix(test.in)
+
+		for r := range actual {
+			for c := range actual[r] {
+				if actual[r][c] != test.expected[r][c] {
+					t.Errorf("Expected: %v, got: %v", test.expected, actual)
+				}
+			}
+		}
 	}
 }

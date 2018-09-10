@@ -1,5 +1,10 @@
 package strings
 
+import (
+	"fmt"
+	"unicode"
+)
+
 // 1.1
 // Implement an algorithm to determine if a string has all unique characters.
 func allCharsUnique(str string) bool {
@@ -117,4 +122,73 @@ func areAnagramsOptimized(str1 string, str2 string) bool {
 	}
 
 	return false
+}
+
+// 1.5
+// Write a method to replace all spaces in a string with ‘%20’.
+func encodeSpaces(str string) string {
+	var runes []rune
+	for _, char := range str {
+		if unicode.IsSpace(char) {
+			runes = append(runes, '%', '2', '0')
+		} else {
+			runes = append(runes, char)
+		}
+	}
+	return string(runes)
+}
+
+// 1.5.b encode spaces in place
+func encodeSpacesInPlace(str string) string {
+	// Golang strings are immutable, modify the []rune in place
+	runes := []rune(str)
+
+	for i := 0; i < len(runes); i++ {
+		if unicode.IsSpace(runes[i]) {
+			runes = append(runes[:i], append([]rune("%20"), runes[i+1:]...)...)
+		}
+	}
+	return string(runes)
+}
+
+// Given an image represented by an NxN matrix, where each pixel in the image is
+// 4 bytes, write a method to rotate the image by 90 degrees. Can you do this
+// in place?
+// Example (just ints, its easier):
+// 1 2 3     7 4 1
+// 4 5 6 ->  8 5 2
+// 7 8 9     9 6 3
+//
+//     i, j  ->  j, n - i
+// 1: (0, 0) -> (0, 2)
+// 2: (0, 1) -> (1, 2)
+// 3: (0, 2) -> (2, 2)
+
+// 4: (1, 0) -> (0, 1)
+// 5: (1, 1) -> (1, 1)
+// 6: (1, 2) -> (2, 1)
+
+// 7: (2, 0) -> (0, 0)
+// 8: (2, 1) -> (1, 0)
+// 9: (2, 2) -> (2, 0)
+
+// 1 2 ->  3 1  got 2 4
+// 3 4     4 2      1 3
+
+func rotateSquareMatrix(matrix [][]int) [][]int {
+	fmt.Println(matrix)
+	n := len(matrix)
+	blank := make([][]int, n)
+	for i := 0; i < n; i++ {
+		blank[i] = make([]int, n)
+	}
+
+	fmt.Println(blank)
+	for row := range matrix {
+		for col := range matrix[row] {
+			fmt.Printf("row: %v, col: %v \n", row, col)
+			blank[row][col] = matrix[n-1-col][row]
+		}
+	}
+	return blank
 }
