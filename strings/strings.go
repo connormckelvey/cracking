@@ -1,7 +1,6 @@
 package strings
 
 import (
-	"fmt"
 	"strings"
 	"unicode"
 )
@@ -156,7 +155,6 @@ func encodeSpacesInPlace(str string) string {
 // 4 bytes, write a method to rotate the image by 90 degrees. Can you do this
 // in place?
 func rotateSquareMatrix(matrix [][]int) [][]int {
-	fmt.Println(matrix)
 	n := len(matrix)
 	blank := make([][]int, n)
 	for i := 0; i < n; i++ {

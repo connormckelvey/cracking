@@ -1,8 +1,10 @@
 package linked_lists
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestNew(t *testing.T) {
+func TestListFromSlice(t *testing.T) {
 	tests := []struct {
 		in       []int
 		expected bool
@@ -11,15 +13,43 @@ func TestNew(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		actual := newLinkedList(test.in...)
-		cur := &actual
+		actualList := listFromSlice(test.in...)
+		actualSlice := sliceFromList(actualList)
 
-		for i := 0; i < len(test.in); i++ {
-			if cur.data != test.in[i] {
+		if len(actualSlice) != len(test.in) {
+			t.Fail()
+		}
+
+		for i := range test.in {
+			if actualSlice[i] != test.in[i] {
 				t.Fail()
 			}
-			cur = cur.next
-			t.Logf("%#v", cur)
+		}
+	}
+}
+
+func TestRemoveDuplicates(t *testing.T) {
+	tests := []struct {
+		in       []int
+		expected []int
+	}{
+		{[]int{1, 3, 2, 3}, []int{1, 3, 2}},
+	}
+
+	for _, test := range tests {
+		list := listFromSlice(test.in...)
+		removeDuplicates(list)
+
+		actualSlice := sliceFromList(list)
+
+		if len(test.expected) != len(actualSlice) {
+			t.Fail()
+		}
+
+		for i := range test.expected {
+			if actualSlice[i] != test.expected[i] {
+				t.Fail()
+			}
 		}
 	}
 }
