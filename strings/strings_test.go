@@ -196,3 +196,21 @@ func TestRotateSquareMatrixInPlace(t *testing.T) {
 		}
 	}
 }
+
+func TestIsRotation(t *testing.T) {
+	tests := []struct {
+		in1      string
+		in2      string
+		expected bool
+	}{
+		{"waterbottle", "erbottlewat", true},
+		{"waterbottle", "erbotlewat", false},
+	}
+
+	for _, test := range tests {
+		actual := isRotatation(test.in1, test.in2)
+		if actual != test.expected {
+			t.Errorf("Expected: %v, got: %v", test.expected, actual)
+		}
+	}
+}

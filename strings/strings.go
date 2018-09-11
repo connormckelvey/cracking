@@ -2,6 +2,7 @@ package strings
 
 import (
 	"fmt"
+	"strings"
 	"unicode"
 )
 
@@ -154,23 +155,6 @@ func encodeSpacesInPlace(str string) string {
 // Given an image represented by an NxN matrix, where each pixel in the image is
 // 4 bytes, write a method to rotate the image by 90 degrees. Can you do this
 // in place?
-// Example (just ints, its easier):
-// 1 2 3     7 4 1
-// 4 5 6 ->  8 5 2
-// 7 8 9     9 6 3
-//
-//     i, j  ->  j, n - i
-// 1: (0, 0) -> (0, 2)
-// 2: (0, 1) -> (1, 2)
-// 3: (0, 2) -> (2, 2)
-
-// 4: (1, 0) -> (0, 1)
-// 5: (1, 1) -> (1, 1)
-// 6: (1, 2) -> (2, 1)
-
-// 7: (2, 0) -> (0, 0)
-// 8: (2, 1) -> (1, 0)
-// 9: (2, 2) -> (2, 0)
 func rotateSquareMatrix(matrix [][]int) [][]int {
 	fmt.Println(matrix)
 	n := len(matrix)
@@ -185,34 +169,6 @@ func rotateSquareMatrix(matrix [][]int) [][]int {
 	}
 	return blank
 }
-
-// 1 2 ->  3 1
-// 3 4     4 2
-
-// 1 2 ->  3 1
-// 3 4     4 2
-// navigate:
-// (0, 0)
-// (0, 1)
-// (1, 1)
-// (1, 0)
-//
-// 1 2 3     7 4 1
-// 4 5 6 ->  8 5 2
-// 7 8 9     9 6 3
-//
-// 2 levels:
-//navigate:
-//corners:
-// (0, 0) copy to: (0, 2)
-// (0, 2) copy to: (2, 2)
-// (2, 2) copy to: (2, 0)
-// (2, 0) copy to: (0, 0)
-// centers:
-// (0, 1) copy to: (1, 2)
-// (1, 2) copy to: (2, 1)
-// (2, 1) copy to: (1, 0)
-// (1, 0) copy to: (0, 1)
 
 func rotateSquareMatrixInPlace(matrix [][]int) [][]int {
 	n := len(matrix)
@@ -229,4 +185,15 @@ func rotateSquareMatrixInPlace(matrix [][]int) [][]int {
 		}
 	}
 	return matrix
+}
+
+// Assume you have a method isSubstring which checks if one word is a substring
+// of another. Given two strings, s1 and s2, write code to check if s2 is a
+// rotation of s1 using only one call to isSubstring (i.e., “waterbottle” is a
+// rotation of “erbottlewat”).
+func isRotatation(str1 string, str2 string) bool {
+	if len(str1) == len(str2) {
+		return strings.Contains(str1+str1, str2)
+	}
+	return false
 }
