@@ -34,6 +34,8 @@ func TestRemoveDuplicates(t *testing.T) {
 		expected []int
 	}{
 		{[]int{1, 3, 2, 3}, []int{1, 3, 2}},
+		{[]int{1, 3, 2, 3, 2, 4}, []int{1, 3, 2, 4}},
+		{[]int{1, 1, 3, 2, 3, 3, 4, 5, 4}, []int{1, 3, 2, 4, 5}},
 	}
 
 	for _, test := range tests {
@@ -43,12 +45,39 @@ func TestRemoveDuplicates(t *testing.T) {
 		actualSlice := sliceFromList(list)
 
 		if len(test.expected) != len(actualSlice) {
-			t.Fail()
+			t.Error()
 		}
 
 		for i := range test.expected {
 			if actualSlice[i] != test.expected[i] {
-				t.Fail()
+				t.Error()
+			}
+		}
+	}
+}
+
+func TestRemoveDuplicatesNoBuffer(t *testing.T) {
+	tests := []struct {
+		in       []int
+		expected []int
+	}{
+		{[]int{1, 3, 2, 3}, []int{1, 3, 2}},
+		{[]int{1, 3, 2, 3, 2, 4}, []int{1, 3, 2, 4}},
+		{[]int{1, 1, 3, 2, 3, 3, 4, 5, 4}, []int{1, 3, 2, 4, 5}},
+	}
+
+	for _, test := range tests {
+		list := listFromSlice(test.in...)
+		removeDuplicatesNoBuffer(list)
+		actualSlice := sliceFromList(list)
+
+		if len(test.expected) != len(actualSlice) {
+			t.Error()
+		}
+
+		for i := range test.expected {
+			if actualSlice[i] != test.expected[i] {
+				t.Error()
 			}
 		}
 	}

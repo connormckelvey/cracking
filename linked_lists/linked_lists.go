@@ -52,3 +52,24 @@ func removeDuplicates(n *node) {
 
 // 2.1.b
 // How would you solve this problem if a temporary buffer is not allowed?
+func removeDuplicatesNoBuffer(n *node) {
+	if n == nil {
+		return
+	}
+
+	prev, cur := n, n.next
+	for cur != nil {
+		runner := n
+		for runner != cur {
+			if runner.data == cur.data {
+				// remove cur
+				prev.next, cur = cur.next, cur.next
+				break
+			}
+			runner = runner.next
+		}
+		if runner == cur {
+			prev, cur = cur, cur.next
+		}
+	}
+}
