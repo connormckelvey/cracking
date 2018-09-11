@@ -82,3 +82,33 @@ func TestRemoveDuplicatesNoBuffer(t *testing.T) {
 		}
 	}
 }
+
+func TestFindNthFromLast(t *testing.T) {
+	tests := []struct {
+		in1      []int
+		in2      int
+		expected interface{}
+	}{
+		{[]int{1, 2, 3, 4, 5}, 2, 4},
+		{[]int{1, 2, 3, 4, 5}, 3, 3},
+		{[]int{1, 2, 3, 4, 5}, 4, 2},
+		{[]int{1, 2, 3, 4, 5}, 6, nil},
+	}
+
+	for _, test := range tests {
+		list := listFromSlice(test.in1...)
+		actual := findNthFromLast(list, test.in2)
+
+		// test nil pointers
+		if actual == nil {
+			if test.expected != nil {
+				t.Errorf("Expected: %v, got: %v", test.expected, actual)
+			}
+			continue
+		}
+
+		if test.expected != actual.data {
+			t.Errorf("Expected: %v, got: %v", test.expected, actual.data)
+		}
+	}
+}

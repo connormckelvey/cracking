@@ -73,3 +73,32 @@ func removeDuplicatesNoBuffer(n *node) {
 		}
 	}
 }
+
+// 2.2
+// Implement an algorithm to find the nth to last element of a singly linked list.
+
+func findNthFromLast(head *node, n int) *node {
+	if head == nil {
+		return nil
+	}
+
+	var length int
+	for cur := head; cur != nil; {
+		cur = cur.next
+		length++
+	}
+
+	if n > length {
+		return nil
+	}
+
+	for cur, i := head, 0; i <= length-n; {
+		if i == length-n {
+			return cur
+		}
+		cur = cur.next
+		i++
+	}
+
+	return nil
+}
